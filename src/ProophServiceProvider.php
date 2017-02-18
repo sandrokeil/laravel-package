@@ -95,4 +95,18 @@ class ProophServiceProvider extends ServiceProvider
             \Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter::class,
         ];
     }
+
+    /**
+     * RECURSIVELY Merge the given configuration with the existing configuration.
+     *
+     * @param string $path
+     * @param string $key
+     */
+    protected function mergeConfigFrom($path, $key)
+    {
+        $config = $this->app['config']->get($key, []);
+
+        $this->app['config']->set($key, array_merge_recursive(require $path, $config));
+    }
+
 }
